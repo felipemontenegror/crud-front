@@ -1,0 +1,25 @@
+/* ## FOOTER  */
+
+footer {
+    background: #ffffff;
+    color: #d60516;
+    border-top: thin dotted #d60516;
+    margin-top: 100px;
+    display: flex;
+    vertical-align: middle;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+footer .projectName {
+    justify-content: start;
+    flex: 1;
+    font-size: 20px;
+    font-weight: 600;
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+
+footer .copyRight img {
+    max-height: 80px;
+}

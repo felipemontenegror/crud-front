@@ -1,0 +1,61 @@
+{
+    "user": [
+      {
+        "id": 0,
+        "is_active": true,
+        "is_admin": false,
+        "nome": "Thyago :}",
+        "email": "ty2@bootcamp.com",
+        "senha": "$2a$10$/AZR/y38/scBNx0AyLRg9OvczsMusQgHLHBeZHIOUSIhMk3genjlq"
+      },
+      {
+        "id": 1,
+        "is_active": true,
+        "is_admin": false,
+        "nome": "Juliana :)",
+        "email": "ju@bootcamp.com",
+        "senha": "$2a$10$sE0h4hl.2mC6buumls9uP.FyynyNRxwTbzzX2/m7U/EJFftLl8..2"
+      },
+      {
+        "id": 2,
+        "is_active": true,
+        "is_admin": true,
+        "nome": "Daniel :}",
+        "email": "danialalalalal",
+        "senha": "$2a$10$cEYWYzCAEdTHu3b1m12pP.O6A47gLYpYCuKJAbyZMag8FA3efmwky"
+      },
+      {
+        "id": 3,
+        "is_active": true,
+        "is_admin": false,
+        "nome": "New",
+        "email": "new@bootcamp.com",
+        "senha": "$2a$10$g1DD/miSH71nf/zj119OXeKmf5tShDY54ihoSV6IekmUyORydwv8a"
+      },
+      {
+        "id": 4,
+        "is_active": true,
+        "is_admin": false,
+        "nome": "New2",
+        "email": "new2@bootcamp.com",
+        "senha": "$2a$10$pdzSFJGwUqh5f22xfiSlL.M2wzuQOkrHTLp/wFEwL6O1gHdj8QtaW"
+      },
+      {
+        "is_active": true,
+        "is_admin": false,
+        "name": "Luiz Bastos",
+        "email": "luiz.bastos@bootcamp.com.br",
+        "senha": "12345",
+        "id": 5
+      },
+      {
+        "is_active": true,
+        "is_admin": false,
+        "name": "Daniel Goulart",
+        "email": "daniel.goulart@bootcamp.com.br",
+        "senha": "54321",
+        "id": 6
+      }
+    ]
+  }
+  

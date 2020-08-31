@@ -1,0 +1,18 @@
+
+/* ## HEADER  */
+
+header {
+    background-color: #d60516;
+    display: flex;
+    padding: 35px;
+    color: #fff
+}
+
+header .title {
+    color: #fff;
+    justify-content: start;
+    flex: 1;
+    font-size: 20px;
+    font-weight: 600;
+    
+}
