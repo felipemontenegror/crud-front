@@ -3,8 +3,8 @@ import { getToken } from './auth'
 import history from './history';
 
 const clientHttp = axios.create({
-    // baseURL: `https://infnet-bootcamp-api.herokuapp.com/api`,
-    baseURL: `http://localhost:3001`
+    baseURL: `https://projeto-individual-back.herokuapp.com/`,
+    //baseURL: `http://localhost:3001`
 })
 
 clientHttp.defaults.headers['Content-Type'] = 'application/json';
