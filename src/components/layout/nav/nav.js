@@ -1,17 +1,23 @@
 import React from 'react'
 import './nav.css'
+import history from '../../../config/history'
+import { Button } from 'reactstrap';
 
-const Nav = (props) => {
-    const { to, name } = props.pagina.actions
+const Nav = ({ name, to }) => {
+
+    const changePage = () => history.push(to)
+
     return (
-        <nav className="">
+        <nav className="d-flex">
             <div className="title"> Lista de Cadastro</div>
             <div className="action">
-                <button onClick={() => props.mudaPagina(to)}>
+                <Button color="primary" onClick={changePage}>
                     {name}
-                </button>
+                </Button>
             </div>
         </nav>
     )
 }
 export default Nav;
+
+

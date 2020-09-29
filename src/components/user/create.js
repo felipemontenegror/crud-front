@@ -1,84 +1,153 @@
-import React, { useState } from 'react'
-import { createUser } from '../../Services/user'
+import React, { useState, useEffect } from 'react'
+import { createUser, updateUser, showUserId} from '../../Services/user'
 // import Loading from '../loading/loading'
+import Alert from '../alert/index'
 import './user.css'
+import Nav from '../layout/nav/nav'
+import { useHistory, useParams } from 'react-router-dom'
+import jwt from 'jsonwebtoken'
+import { getToken } from '../../config/auth'
+import { Button, FormGroup, Label, Input, CustomInput } from 'reactstrap';
+
+
 
 const UserCreate = (props) => {
-
+    const [userIsAdmin, setUserIsAdmin] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
+    const [isEdit, setisEdit] = useState(false)
+    const [alert, setAlert] = useState({})
+    const history = useHistory()
+    const { id } = useParams()
+    const methodUser = isEdit ? updateUser : createUser
 
     const [form, setForm] = useState({
-        is_active: true,
         is_admin: false
     })
 
+    useEffect(() => {
+        (async () => {
+            const { user } = await jwt.decode(getToken())
+            setUserIsAdmin(user.is_admin)
+        })()
+        return () => { }
+    }, [])
+
+    useEffect(() => {
+        const getShowUser = async () => {
+            const user = await showUserId(id)
+            if (user.data.senha) {
+                delete user.data.senha
+            }
+            setForm(user.data)
+        }
+
+
+        if (id) {
+            setisEdit(true)
+            getShowUser()
+        }
+
+    }, [id])
+
+
+
     const handleChange = (event) => {
+        // const checked = event.target.value === 'on' ? true : false
+
+        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        const name = event.target.name;
+
         setForm({
             ...form,
-            [event.target.name]: event.target.value
-        })
-        return;
+            [name]: value
+        });
     }
 
     const formIsValid = () => {
-        return form.nome && form.email && form.senha && form.time && form.jogador
+        return form.nome && form.email
     }
 
-    const submitForm = async () => {
+    const submitForm = async (event) => {
+
         try {
             setIsSubmit(true)
-            await createUser(form)
-            alert('Seu formulário foi enviado com sucesso')
+            await methodUser(form)
+            const is_admin = userIsAdmin ? form.is_admin : false
             setForm({
-                is_active: true,
-                is_admin: false
+                ...form,
+                is_admin
+            })
+
+            setAlert({
+                type: "success",
+                message: 'Seu formulário foi enviado com sucesso',
+                show: true
             })
             setIsSubmit(false)
-            props.mudaPagina('List')
-        } catch (error) {
-            console.log('deu ruim')
+
+            setTimeout(() =>
+                history.push('/')
+                , 3000)
+        } catch (e) {
+            setAlert({
+                type: "error",
+                message: 'Ocorreu um erro no cadastro',
+                show: true
+            })
+            setIsSubmit(false)
         }
     }
 
-
-
     return (
-        <section >
+        <React.Fragment>
+            <Nav name="Lista" to="/" />
+            <section>
+                <Alert type={alert.type || ""} message={alert.message || ""} show={alert.show || false} />
 
-            <div className="create_user">
-                <div className="form_login">
-                    <div>
-                        <label htmlFor="auth_nome">Nome:</label>
-                        <input disabled={isSubmit} type="text" id="auth_nome" name="nome" onChange={handleChange} value={form.nome || ""} placeholder="Insira o seu nome" />
-                    </div>
-                    <div>
-                        <label htmlFor="auth_email">Email:</label>
-                        <input disabled={isSubmit} type="email" id="auth_email" name="email" onChange={handleChange} value={form.email || ""} placeholder="Insira sua senha" />
-                    </div>
-                    <div>
-                        <label htmlFor="auth_password">Senha:</label>
-                        <input disabled={isSubmit} type="password" id="auth_password" name="senha" onChange={handleChange} value={form.senha || ""} placeholder="Insira sua senha" />
-                    </div>
+                <div className="create_user">
+                    <div className="form_login">
+                        <FormGroup>
+                            <Label for="auth_nome">Nome</Label>
+                            <Input disabled={isSubmit} type="text" id="auth_nome" name="nome" onChange={handleChange} value={form.nome || ""} placeholder="Insira o seu nome" />
+                        </FormGroup>
 
-                    <div>
-                        <label htmlFor="auth_time">Time:</label>
-                        <input disabled={isSubmit} type="text" id="auth_time" name="time" onChange={handleChange} value={form.time || ""} placeholder="Insira seu time" />
-                    </div>
 
-                    <div>
-                        <label htmlFor="auth_jogador">Jogador:</label>
-                        <input disabled={isSubmit} type="text" id="auth_jogador" name="jogador" onChange={handleChange} value={form.jogador || ""} placeholder="Insira o jogador" />
-                    </div>
+                        <FormGroup>
+                            <Label for="auth_email">Email</Label>
+                            <Input disabled={isSubmit || isEdit} type="email" id="auth_email" name="email" onChange={handleChange} value={form.email || ""} placeholder="Insira sua senha" />
+                        </FormGroup>
 
-                    <button disabled={!formIsValid()} onClick={submitForm}>Cadastrar</button>
+                        <FormGroup>
+                            <Label for="auth_password">Senha</Label>
+                            <Input disabled={isSubmit} type="password"
+                                id="auth_password" name="senha"
+                                onChange={handleChange}
+                                value={form.senha || ""}
+                                placeholder={isEdit ? `Atualize sua senha ` : 'Informe sua senha'} />
+                        </FormGroup>
+
+
+                        <FormGroup>
+                            {userIsAdmin ? (
+                                <CustomInput type="switch" label="Ativar Usuário como administrador:" name="is_admin" id="is_admin" onChange={handleChange} checked={(!isEdit ? true : form.is_admin) || false} />
+                            ) : ""}
+                            <CustomInput type="switch" label="Usuário ativo ?" id="is_active" name="is_active" onChange={handleChange} checked={(!isEdit ? true : form.is_active) || false} />
+                        </FormGroup>
+
+                        <Button color="primary" disabled={!formIsValid()} onClick={submitForm}>
+                            {isEdit ? "Atualizar" : "Cadastrar"}
+                        </Button>
+                    </div>
+                    <br />
+                    {/* <Loading show={isSubmit}/> */}
+                    {isSubmit ? <div>Carregando....</div> : ""}
+
                 </div>
-                <br />
-                {/* <Loading show={isSubmit}/> */}
-                {isSubmit ? <div>Carregando....</div> : ""}
+            </section >
+        </React.Fragment >
 
-            </div>
-        </section >
     )
 }
 
 export default UserCreate
+

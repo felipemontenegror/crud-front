@@ -1,18 +1,21 @@
 import { clientHttp } from '../../src/config/config'
 
-const createUser = (data) => clientHttp.post(`/usuario`, data) //ou '/api/usuario  ?'
 
-const ListUser = () => clientHttp.get(`/usuario`)
+const createUser = (data) => clientHttp.post(`/user`, data)
+
+const updateUser = (data) => clientHttp.patch(`/user/${data._id}`, data)
+// TODO: Verificar no back  a atualização
+
+const ListUser = () => clientHttp.get(`/user`)
+
+const DeleteUser = (id) => clientHttp.delete(`/user/${id}`)
+
+const showUserId = (id) => clientHttp.patch(`/user/${id}`)
 
 export {
     createUser,
-    ListUser
+    ListUser,
+    DeleteUser,
+    showUserId,
+    updateUser
 }
-
-//import {clientHTTP} from "../../src/config/config"
-
-//const createUser = (data) => clientHTTP.post(`/user`, data)
-
-//export {
-//    createUser
-//}
